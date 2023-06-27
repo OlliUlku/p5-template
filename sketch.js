@@ -23,9 +23,9 @@ function setup() {
 }
 
 function draw() {
-  ortho()
-  // orbitControl();
-  
+  // ortho()
+  orbitControl();
+
 
 
   background(0);
@@ -48,6 +48,15 @@ function draw() {
     Boxes[i].update();
     Boxes[i].show();
   }
+  push()
+  shininess(10000)
+  specularMaterial(ONE);
+  translate(0, 0, frameCount/10+10);
+  rotateX(frameCount/2)
+  rotateY(frameCount/3)
+  rotateZ(frameCount/5)
+  box(10)
+  pop()
 
   // pop();
   // push();
@@ -63,8 +72,8 @@ function draw() {
 
 class Box {
   constructor() {
-    this.pos = createVector(0, 0);
-    this.vel = createVector(1, 0);
+    this.pos = createVector(0, 0, random(5));
+    this.vel = createVector(1, 0, 0);
     this.vel.rotate(random(360));
     this.size = 20;
     this.c = color(random(255), random(255), random(255));
@@ -80,7 +89,7 @@ class Box {
   }
 
   light() {
-    spotLight(this.c, this.pos.x, this.pos.y, 1000, 0, 0, -1, 300, 400);
+    spotLight(this.c, this.pos.x, this.pos.y, 1000, 0, 0, -1, 100, 400);
   }
 
   show() {
