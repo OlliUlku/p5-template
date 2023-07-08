@@ -3,8 +3,8 @@ let ONE = 255;
 let angleX = 0;
 let angleY = 0;
 let angleZ = 0;
-
-Boxes = [];
+let Madot = [];
+let Boxes = [];
 
 function setup() {
   // CENTERS CANVAS
@@ -19,6 +19,10 @@ function setup() {
 
   for (let i = 0; i < 100; i++) {
     Boxes[i] = new Box();
+  }
+
+  for (let i = 0; i < 1; i++) {
+    Madot[i] = new mato();
   }
 }
 
@@ -48,15 +52,19 @@ function draw() {
     Boxes[i].update();
     Boxes[i].show();
   }
-  push()
-  shininess(10000)
+  for (i in Madot) {
+    Madot[i].update();
+    Madot[i].show();
+  }
+  push();
+  shininess(10000);
   specularMaterial(ONE);
-  translate(0, 0, frameCount/10+10);
-  rotateX(frameCount/2)
-  rotateY(frameCount/3)
-  rotateZ(frameCount/5)
-  box(10)
-  pop()
+  translate(0, 0, frameCount / 10 + 10);
+  rotateX(frameCount / 2);
+  rotateY(frameCount / 3);
+  rotateZ(frameCount / 5);
+  box(10);
+  pop();
 
   // pop();
   // push();
@@ -65,9 +73,18 @@ function draw() {
   // box(20);
   // pop();
 
-  // angleMode(RADIANS)
-  // camera(Boxes[0].pos.x, Boxes[0].pos.y, (height/2) / tan(PI/6), Boxes[0].pos.x, Boxes[0].pos.y, 0, 0, 1, 0)
-  // angleMode(DEGREES);
+   angleMode(RADIANS)
+   camera(Madot[0].pos.x, Madot[0].pos.y, (height/2) / tan(PI/6), Madot[0].pos.x, Madot[0].pos.y, 0, 0, 1, 0)
+   angleMode(DEGREES);
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    Madot[0].TURNLEFT();
+  }
+  if (keyCode === RIGHT_ARROW) {
+    Madot[0].TURNRIGHT();
+  }
 }
 
 class Box {
