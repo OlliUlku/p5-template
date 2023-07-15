@@ -18,6 +18,14 @@ class mato {
 
         this.direction = this.instructions.shift();
 
+        let oppositeDir = this.vel.copy();
+        oppositeDir.mult(-1);
+        print(oppositeDir);
+        print('HELLOOO');
+        if (oppositeDir === this.direction) {
+            print('trye');
+        }
+
         if (this.direction != undefined) {
             this.vel.set(this.direction);
         }

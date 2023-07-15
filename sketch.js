@@ -56,7 +56,7 @@ function draw() {
     Boxes[i].light();
   }
 
-  spotLight(ONE, ONE, ONE, 0, 0, 200, 0, 0, -1, PI / 8, 0);
+   spotLight(ONE, ONE, ONE, 0, 0, 200, 0, 0, -1, PI / 8, 0);
   // pointLight(ONE, ONE, ONE, 0, 0, 100);
   noStroke();
 
@@ -147,8 +147,15 @@ function keyPressed() {
     Madot[0].TURNUP_Z();
   }
   else if (keyCode === RETURN) {
-    for (i in Omput) {
-      Omput[i].newPos();
+    if (isLooping) {
+      noLoop();
+    }
+
+    else {
+      loop();
+      for (i in Omput) {
+        Omput[i].newPos();
+      }
     }
   }
 }
@@ -171,7 +178,7 @@ class Box {
   }
 
   light() {
-    spotLight(this.c, this.pos.x, this.pos.y, 1000, 0, 0, -1, 100, 400);
+    //spotLight(this.c, this.pos.x, this.pos.y, 1000, 0, 0, -1, 100, 400);
   }
 
   show() {
