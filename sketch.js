@@ -8,6 +8,8 @@ let Boxes = [];
 let F = 20;
 let frames = 0;
 let Omput = [];
+let highScore;
+let _area = 1500
 
 
 function setup() {
@@ -36,9 +38,16 @@ function setup() {
     Madot[i] = new mato();
   }
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 1; i++) {
     Omput[i] = new omena();
   }
+  highScore = getItem('highScore');
+  if (highScore === null) {
+    highScore = 0;
+  }
+  print('Game start!');
+  print('Current local highscore: ' + highScore);
+
 }
 
 function draw() {
@@ -52,11 +61,15 @@ function draw() {
 
   background(0);
 
-  for (i in Boxes) {
+  for (let i = 0; i < 3; i++) {
     Boxes[i].light();
   }
 
-   spotLight(ONE, ONE, ONE, 0, 0, 200, 0, 0, -1, PI / 8, 0);
+  for (let i in Madot) {
+    Madot[i].light();
+  }
+
+  //spotLight(ONE, ONE, ONE, 0, 0, 200, 0, 0, -1, PI / 8, 800);
   // pointLight(ONE, ONE, ONE, 0, 0, 100);
   noStroke();
 
@@ -68,42 +81,48 @@ function draw() {
 
   push();
   translate(0, 0, -Madot[0].size);
-  for (i in Boxes) {
+  for (let i in Boxes) {
     Boxes[i].update();
     Boxes[i].show();
   }
   pop();
 
-  for (i in Omput) {
+  for (let i in Omput) {
     Omput[i].show();
     // if (frameCount % 22 === 0) {
     //   Omput[i].update();
     // }
   }
 
-  for (i in ohjaimet) {
+  for (let i in ohjaimet) {
     controlScheme(i);
   }
 
-  for (i in Madot) {
+  for (let i in Madot) {
     Madot[i].show();
 
     if (frameCount % 30 === 0) {
       Madot[i].update();
+
+      for (let k in Omput) {
+        Madot[i].tryToEat(Omput[k].pos, k);
+      }
       frames = 0;
     }
+
+
   }
 
   // RotatingBox
-  push();
-  shininess(10000);
-  emissiveMaterial(ONE);
-  translate(0, 0, frameCount / 10 + 10);
-  rotateX(frameCount / 2);
-  rotateY(frameCount / 3);
-  rotateZ(frameCount / 5);
-  box(10);
-  pop();
+  // push();
+  // shininess(10000);
+  // emissiveMaterial(ONE);
+  // translate(0, 0, frameCount / 10 + 10);
+  // rotateX(frameCount / 2);
+  // rotateY(frameCount / 3);
+  // rotateZ(frameCount / 5);
+  // box(10);
+  // pop();
 
   // pop();
   // push();
@@ -123,7 +142,10 @@ function draw() {
   }
   angleMode(RADIANS);
 
-  camera(camX + 400, camY + 400, (height / 2) / tan(PI / 6), camX, camY, 0, 1, 1, 0);
+  let siniX = map(sin(frameCount / 100), -1, 1, 50, 400);
+  let siniY = map(sin(frameCount / 100), -1, 1, 300, 400);
+
+  camera(camX + siniX, camY + siniY, (height / 2) / tan(PI / 6), camX, camY, 0, 1, 1, 0);
   angleMode(DEGREES);
 }
 
@@ -147,16 +169,25 @@ function keyPressed() {
     Madot[0].TURNUP_Z();
   }
   else if (keyCode === RETURN) {
-    if (isLooping) {
-      noLoop();
+    // if (isLooping) {
+    //   noLoop();
+    // }
+    // else {
+
+    for (let i in Omput) {
+      Omput[i].newPos();
     }
 
-    else {
-      loop();
-      for (i in Omput) {
-        Omput[i].newPos();
-      }
-    }
+    // }
+  }
+}
+
+function gameOver() {
+  noLoop();
+  print('Game OVER!!! Points ' + Madot[0].points + ', current local highscore: ' + highScore);
+  if (Madot[0].points > highScore) {
+    print('NEW LOCAL HIGHSCORE!!!!!!!! ' + Madot[0].points + ' POINTS!!!!!');
+    storeItem('highScore', Madot[0].points);
   }
 }
 
@@ -175,10 +206,16 @@ class Box {
     let rSize = 2;
     this.vel.rotate(random(-20, 20));
     this.pos.add(this.vel);
+    if (this.pos.x > _area || this.pos.x < -(_area)) {
+      this.pos.x *= -1;
+    }
+    if (this.pos.y > _area || this.pos.y < -(_area)) {
+      this.pos.y *= -1;
+    }
   }
 
   light() {
-    //spotLight(this.c, this.pos.x, this.pos.y, 1000, 0, 0, -1, 100, 400);
+    spotLight(this.c, this.pos.x, this.pos.y, 1000, 0, 0, -1, 100, 400);
   }
 
   show() {
@@ -191,29 +228,4 @@ class Box {
   }
 }
 
-class omena {
-  constructor() {
-    this.newPos();
-    this.size = F;
-  }
 
-
-  newPos() {
-    this.pos = createVector((round(random(-10, 10))), (round(random(-10, 10))), (round(random(0, 20))));
-  }
-
-  update() {
-    this.newPos();
-  }
-
-  show() {
-    push();
-    translate(this.pos.x * F, this.pos.y * F, this.pos.z * F);
-    emissiveMaterial(255, 0, 255);
-    box(this.size);
-    pop();
-  }
-
-
-
-}
