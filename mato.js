@@ -9,7 +9,6 @@ class mato {
         this.direction = this.vel.copy();
 
         this.tail = [createVector(0, 1, 0), createVector(0, 1, 0), createVector(0, 1, 0), createVector(0, 1, 0), createVector(0, 1, 0), createVector(0, 1, 0)];
-        print(this.tail);
     }
 
     update() {
@@ -79,11 +78,9 @@ class mato {
         append(this.instructions, createVector(0, 1, 0));
     }
     TURNUP_Z() {
-        print('w');
         append(this.instructions, createVector(0, 0, 1));
     }
     TURNDOWN_Z() {
-        print('s');
         append(this.instructions, createVector(0, 0, -1));
     }
 }

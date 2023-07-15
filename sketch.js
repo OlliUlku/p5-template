@@ -20,6 +20,11 @@ function setup() {
   //rectMode(CENTER);
   angleMode(DEGREES);
 
+  // CONTROLLERS
+  addConnection();
+  for (let i = 0; i < 1; i++) {
+    ohjaimet[i] = new Controller_8BitDoZero2(i);
+  }
 
 
 
@@ -37,6 +42,9 @@ function setup() {
 }
 
 function draw() {
+
+  controllerUsed(); //checks all buttons and updates values
+
   //ortho();
   //orbitControl();
 
@@ -71,6 +79,10 @@ function draw() {
     // if (frameCount % 22 === 0) {
     //   Omput[i].update();
     // }
+  }
+
+  for (i in ohjaimet) {
+    controlScheme(i);
   }
 
   for (i in Madot) {
@@ -175,7 +187,6 @@ class Box {
 class omena {
   constructor() {
     this.newPos();
-    print(this.pos);
     this.size = F;
   }
 
