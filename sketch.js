@@ -9,7 +9,7 @@ let F = 20;
 let frames = 0;
 let Omput = [];
 let highScore;
-let _area = 1500
+let _area = 1500;
 
 
 function setup() {
@@ -140,6 +140,10 @@ function draw() {
   if (frames >= 60) {
     frames = 0;
   }
+
+  grid3d();
+
+  //CAMERA
   angleMode(RADIANS);
 
   let siniX = map(sin(frameCount / 100), -1, 1, 50, 400);
@@ -228,4 +232,30 @@ class Box {
   }
 }
 
+function grid3d() {
+  push();
+  noFill();
+  stroke(0, 150, 0);
+  strokeWeight(1);
+  let gRadX = Omput[0].radius * 2;
+  let gRadY = Omput[0].radius * 2;
+  let gRadZ = Omput[0].radius * 2;
+
+  translate(-(gRadX*F/2),-(gRadY*F/2),0)
+  translate(-(F/2),-(F/2),-(F/2))
+  let division = 10
+
+  for (let x = 0; x <= gRadX; x += division) {
+    for (let y = 0; y <= gRadY; y += division) {
+      for (let z = 0; z <= gRadY; z += division) {
+      line(x * F, y * F, z * F, gRadX * F - x * F, y * F, z*F);
+      line(x * F, y * F, z * F, x * F, gRadY * F - y * F, z*F);
+      line(x * F, y * F, z * F, x * F, y * F, gRadZ * F - z*F);
+
+      }
+    }
+  }
+
+  pop();
+}
 
