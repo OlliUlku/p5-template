@@ -12,8 +12,12 @@ class mato {
         this.direction = this.vel.copy();
         this.nextPos;
         this.c = color(0, 0, 120);
+        this.growCount = 0;
 
-        this.tail = [createVector(0, 1, 0), createVector(0, 1, 0), createVector(0, 1, 0), createVector(0, 1, 0), createVector(0, 1, 0), createVector(0, 1, 0)];
+        this.tail = [];
+        for (let i = 0; i < 5; i++) {
+            this.tail.push(createVector(0, 1, 0));
+        }
     }
 
     light() {
@@ -51,20 +55,22 @@ class mato {
 
         //move tail
         this.tail.shift();
-        append(this.tail, this.pos.copy());
+        this.tail.push(this.pos.copy());
 
         this.nextPos = p5.Vector.add(this.pos, this.vel);
-        for (let i in this.tail) {
-            if (this.nextPos.equals(this.tail[i])) {
-            }
-        }
+
+        //About to hit tail?
+        // for (let i in this.tail) {
+        //     if (this.nextPos.equals(this.tail[i])) {
+        //     }
+        // }
 
         //move head
         this.pos.add(this.vel);
 
         for (let i in this.tail) {
             if (this.pos.equals(this.tail[i])) {
-               gameOver()
+                gameOver();
             }
         }
     }
@@ -76,11 +82,15 @@ class mato {
         emissiveMaterial(0, 0, 255);
         box(this.size);
         pop();
-        for (let k = 0; k < this.tail.length; k++) {
+        for (let k = this.tail.length - 1; k >= 0; k--) {
             push();
             let position = this.tail[k].copy();
             translate(position.x * F, position.y * F, position.z * F);
             emissiveMaterial(this.c);
+            // debug highlight last tail pos
+            // if (k === 0) {
+            //     emissiveMaterial(100, 0, 0);
+            // }
             box(this.size);
             pop();
         }
@@ -110,9 +120,11 @@ class mato {
             //EATING!!
             this.hp = this.fullHp;
             this.points++;
-            print('Yum!!! nicely done! Points: ' + this. points);
-            for (let i = 0; i < 5; i++) {
-                append(this.tail, this.pos.copy());
+            print('Yum!!! nicely done! Points: ' + this.points);
+            for (let i = 0; i < 3; i++) {
+                this.growCount++;
+                let lastTailPos = this.tail[0];
+                this.tail.unshift(lastTailPos.copy());
             }
             Omput[omppuIndex].eaten();
         }
