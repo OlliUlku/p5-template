@@ -5,16 +5,47 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Sketch</title>
+  <title>Scrape/API test</title>
 
   <link rel="stylesheet" type="text/css" href="style.css">
 
-  <script src="libraries/p5.min.js"></script>
-  <script src="libraries/p5.sound.min.js"></script>
 </head>
 
 <body>
-  <script src="sketch.js"></script>
+  <img src="" id="CAKE" width="100" />
+  <script>
+    async function catchCAKE() {
+      const response = await fetch('CAKE.JPG');
+      const blob = await response.blob();
+      document.getElementById('CAKE').src = URL.createObjectURL(blob);
+    }
+
+    catchCAKE().then(response => {
+      console.log('Image loaded!')
+    })
+    .catch(error => {
+      console.log('Error!')
+      console.log(error)
+    });
+
+
+
+    // console.log('fetch CAKE image!');
+    // fetch('CAKE.JPG')
+    //   .then(response => {
+    //     //console.log(response);
+    //     return response.blob();
+    //   })
+    //   .then(blob => {
+    //     //console.log(blob);
+    //     document.getElementById('CAKE').src = URL.createObjectURL(blob);
+    //   })
+    //   .catch(error => {
+    //     console.log('ERROR!');
+    //     console.log(error);
+    //   });
+
+  </script>
 </body>
 
 </html>
